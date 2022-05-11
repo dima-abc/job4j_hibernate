@@ -5,14 +5,15 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5432/todo_db</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5432/hibernate_db</property>
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">password</property>
         <property name="hibernate.connection.pool_size">1</property>
         <property name="hibernate.current_session_context_class">thread</property>
         <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
-        <mapping class="ru.job4j.job4j_hibernate.model.CarMark"/>
-        <mapping class="ru.job4j.job4j_hibernate.model.CarModel"/>
+        <mapping class="ru.job4j.hibernate.model.car.CarMark"/>
+        <mapping class="ru.job4j.hibernate.model.car.CarModel"/>
     </session-factory>
 </hibernate-configuration>
