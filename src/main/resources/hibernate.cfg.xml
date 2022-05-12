@@ -11,11 +11,13 @@
         <property name="hibernate.connection.pool_size">1</property>
         <property name="hibernate.current_session_context_class">thread</property>
         <property name="hibernate.show_sql">true</property>
-        <property name="hibernate.hbm2ddl.auto">create</property>
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
         <mapping class="ru.job4j.hibernate.model.car.CarMark"/>
         <mapping class="ru.job4j.hibernate.model.car.CarModel"/>
         <mapping class="ru.job4j.hibernate.model.book.Author"/>
         <mapping class="ru.job4j.hibernate.model.book.Book"/>
+        <mapping class="ru.job4j.hibernate.model.carlazy.Model"/>
+        <mapping class="ru.job4j.hibernate.model.carlazy.Mark"/>
     </session-factory>
 </hibernate-configuration>
