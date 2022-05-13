@@ -13,6 +13,7 @@
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
+        <mapping class="ru.job4j.hibernate.model.hql.Candidate"/>
         <mapping class="ru.job4j.hibernate.model.car.CarMark"/>
         <mapping class="ru.job4j.hibernate.model.car.CarModel"/>
         <mapping class="ru.job4j.hibernate.model.book.Author"/>
