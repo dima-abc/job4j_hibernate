@@ -7,8 +7,8 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.job4j.hibernate.model.hql.Candidate;
-
-import java.util.List;
+import ru.job4j.hibernate.model.hql.DataV;
+import ru.job4j.hibernate.model.hql.Vacancy;
 
 /**
  * 3. Мидл
@@ -22,6 +22,8 @@ import java.util.List;
  */
 public class CandidateApp {
     public static void main(String[] args) {
+        addData();
+        Candidate rsl = null;
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure().build();
         try {
@@ -29,30 +31,12 @@ public class CandidateApp {
                     .buildMetadata().buildSessionFactory();
             Session session = sf.openSession();
             Transaction tr = session.beginTransaction();
-            Candidate first = Candidate.of("Ivan", "3 years", 3000.00);
-            Candidate two = Candidate.of("Nikita", "1 month", 1000.00);
-            Candidate three = Candidate.of("Sasha", "1 year", 2000.00);
-            session.save(first);
-            session.save(two);
-            session.save(three);
-            List<Candidate> allCandidate = session.createQuery("from Candidate").list();
-            List<Candidate> candidateFromId = session.createQuery(
-                            "from Candidate where id=:id")
-                    .setParameter("id", two.getId())
-                    .list();
-            List<Candidate> candidateFromName = session.createQuery(
-                            "from Candidate where name=:name")
-                    .setParameter("name", first.getName())
-                    .list();
-            session.createQuery(
-                            "update Candidate set experience=:experience, salary=:salary where id=:id")
-                    .setParameter("experience", "2 year")
-                    .setParameter("salary", 2500.00)
-                    .setParameter("id", three.getId())
-                    .executeUpdate();
-            session.createQuery("delete Candidate where id=:id")
-                    .setParameter("id", first.getId())
-                    .executeUpdate();
+            rsl = session.createQuery("select distinct c from Candidate c "
+                            + "join fetch c.dataV d "
+                            + "join fetch d.vacancies v "
+                            + "where c.id =:cId", Candidate.class)
+                    .setParameter("cId", 1)
+                    .uniqueResult();
             tr.commit();
             session.close();
         } catch (Exception e) {
@@ -60,5 +44,38 @@ public class CandidateApp {
         } finally {
             StandardServiceRegistryBuilder.destroy(registry);
         }
+        System.out.println(rsl);
+    }
+
+    private static void addData() {
+        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+                .configure().build();
+        final SessionFactory sf = new MetadataSources(registry)
+                .buildMetadata().buildSessionFactory();
+        final Session session = sf.openSession();
+        final Transaction tx = session.beginTransaction();
+        try {
+            Vacancy senor = Vacancy.of("Java senor developer");
+            Vacancy midl = Vacancy.of("Java midl developer");
+            Vacancy jun = Vacancy.of("Java jun developer");
+            session.persist(senor);
+            session.persist(midl);
+            session.persist(jun);
+            DataV dataV = DataV.of("Java");
+            dataV.addVacancies(senor);
+            dataV.addVacancies(midl);
+            dataV.addVacancies(jun);
+            session.persist(dataV);
+            Candidate candidate = Candidate.of("Nik", "1 year", 2000.00D, dataV);
+            session.persist(candidate);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+            StandardServiceRegistryBuilder.destroy(registry);
+        }
+
     }
 }
