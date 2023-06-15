@@ -36,3 +36,9 @@ HibernateApp. <br>
 Результат генерации таблицы c_mark_c_model <br>
 
 ![](img/c_mark_c_model.jpg)
+
+### Контакты
+
+> email: [haoos@inbox.ru](mailto:haoos@inbox.ru) <br>
+> tl: [Dima_software](https://t.me/Dima_software) <br>
+> github.com: [Dima-Stepanov](https://github.com/Dima-Stepanov)
